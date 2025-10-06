@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Mis Facturas{% endblock %}
+{% block content %}
+<h2>Mis Facturas</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Monto USD</th>
+      <th>Monto Bs</th>
+      <th>Fecha</th>
+      <th>Pagada</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for f in facturas %}
+    <tr>
+      <td>{{ f.monto_total_usd }}</td>
+      <td>{{ f.monto_total_bs_fecha_emision }}</td>
+      <td>{{ f.fecha_emision }}</td>
+      <td>{{ f.pagada|yesno:"Sí,No" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Panel de Administración{% endblock %}
+{% block content %}
+<h2>Panel de Administración</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Facturas</h5>
+                <p class="card-text">Ver y generar facturas.</p>
+                <a href="{% url 'lista_facturas' %}" class="btn btn-primary">Ver Facturas</a>
+                <a href="{% url 'generar_factura' %}" class="btn btn-success">Generar Factura</a>
+                <a href="{% url 'generar_facturas_alicuotas' %}" class="btn btn-info">Generar por Alícuotas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Gastos</h5>
+                <p class="card-text">Ver y registrar gastos del edificio.</p>
+                <a href="{% url 'lista_gastos' %}" class="btn btn-primary">Ver Gastos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Tasa de Cambio</h5>
+                <p class="card-text">Actualizar tasa de cambio.</p>
+                <a href="{% url 'actualizar_tasa_manual' %}" class="btn btn-primary">Actualizar Tasa</a>
+                <a href="{% url 'actualizar_tasa_api' %}" class="btn btn-success">Actualizar desde API</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Conversiones de Divisas</h5>
+                <p class="card-text">Ver conversiones de Bs a USD.</p>
+                <a href="{% url 'lista_conversiones' %}" class="btn btn-primary">Ver Conversiones</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Mi Cuenta{% endblock %}
+{% block content %}
+<h2>Mi Cuenta</h2>
+
+<h4>Unidad: {{ unidad.nombre }}</h4>
+<h5>Propietario: {{ unidad.propietario }}</h5>
+<h5>Inquilino: {{ unidad.inquilino|default:"N/A" }}</h5>
+
+<h3>Saldo Pendiente Total: {{ saldo_pendiente_total|floatformat:2 }} Bs</h3>
+
+<h4>Facturas</h4>
+<ul>
+  {% for f in facturas %}
+  <li>{{ f.fecha_emision }} - {{ f.monto_total_bs_fecha_emision|floatformat:2 }} Bs ({{ f.monto_total_usd }} USD)</li>
+  {% endfor %}
+</ul>
+
+<h4>Pagos Realizados</h4>
+<ul>
+  {% for p in pagos %}
+  <li>{{ p.fecha_pago }} - {{ p.monto_pagado_bs|floatformat:2 }} Bs ({{ p.monto_pagado_usd|floatformat:2 }} USD)</li>
+  {% endfor %}
+</ul>
+{% endblock %}

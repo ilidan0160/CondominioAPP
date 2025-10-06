@@ -1,0 +1,11 @@
+Django>=4.2
+psycopg2-binary
+python-telegram-bot
+celery
+redis
+django-crispy-forms
+reportlab
+requests
+django-jazzmin
+django-admin-interface
+django-colorfield

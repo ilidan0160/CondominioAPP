@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Gastos del Edificio{% endblock %}
+{% block content %}
+<h2>Gastos del Edificio</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Descripción</th>
+      <th>Categoría</th>
+      <th>Monto USD</th>
+      <th>Monto Bs</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for g in gastos %}
+    <tr>
+      <td>{{ g.descripcion }}</td>
+      <td>{{ g.categoria.nombre }}</td>
+      <td>{{ g.monto_usd }}</td>
+      <td>{{ g.monto_bs }}</td>
+      <td>{{ g.fecha }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

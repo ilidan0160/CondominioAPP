@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Mi Cuenta{% endblock %}
+{% block content %}
+<h2>Mi Cuenta</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Facturas</h5>
+                <p class="card-text">Ver tus facturas pendientes.</p>
+                <a href="{% url 'mi_cuenta' %}" class="btn btn-primary">Ver Facturas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Saldos Pendientes</h5>
+                <p class="card-text">Ver tu saldo pendiente.</p>
+                <a href="{% url 'mi_cuenta' %}" class="btn btn-primary">Ver Saldos</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

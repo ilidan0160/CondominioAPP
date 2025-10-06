@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Generar Facturas por Alícuotas{% endblock %}
+{% block content %}
+<h2>Generar Facturas por Alícuotas</h2>
+
+<p>Esta acción generará una factura para cada unidad basada en su alícuota y los gastos comunes del mes.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Generar Facturas</button>
+</form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Actualizar Tasa de Cambio{% endblock %}
+{% block content %}
+<h2>Actualizar Tasa de Cambio</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="tasa" class="form-label">Tasa de Cambio Actual (USD a Bs)</label>
+        <input type="number" step="any" class="form-control" id="tasa" name="tasa" value="{{ tasa_actual }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+</form>
+
+<br>
+
+<a href="{% url 'actualizar_tasa_api' %}" class="btn btn-success">Actualizar desde API</a>
+{% endblock %}

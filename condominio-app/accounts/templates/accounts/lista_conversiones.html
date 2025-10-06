@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Conversiones de Divisas{% endblock %}
+{% block content %}
+<h2>Conversiones de Divisas</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Monto Bs</th>
+      <th>Monto USD</th>
+      <th>Tasa USD</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in conversiones %}
+    <tr>
+      <td>{{ c.fecha_conversion }}</td>
+      <td>{{ c.monto_bs }}</td>
+      <td>{{ c.monto_usd }}</td>
+      <td>{{ c.tasa_usd }}</td>
+      <td>{{ c.descripcion|default:"N/A" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

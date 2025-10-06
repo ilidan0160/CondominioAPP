@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Crear Cuota Especial{% endblock %}
+{% block content %}
+<h2>Crear Cuota Especial</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="{{ form.descripcion.id_for_label }}" class="form-label">Descripción</label>
+        {{ form.descripcion }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.monto_usd.id_for_label }}" class="form-label">Monto USD</label>
+        {{ form.monto_usd }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.monto_bs.id_for_label }}" class="form-label">Monto Bs</label>
+        {{ form.monto_bs }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.fecha.id_for_label }}" class="form-label">Fecha</label>
+        {{ form.fecha }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.unidades.id_for_label }}" class="form-label">Unidades</label>
+        {{ form.unidades }}
+        <small class="form-text text-muted">Deja en blanco si aplicar_a_todas es True</small>
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.aplicar_a_todas.id_for_label }}" class="form-label">Aplicar a todas las unidades</label>
+        {{ form.aplicar_a_todas }}
+    </div>
+    <button type="submit" class="btn btn-primary">Crear Cuota Especial</button>
+</form>
+{% endblock %}

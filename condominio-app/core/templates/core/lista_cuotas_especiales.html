@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Cuotas Especiales{% endblock %}
+{% block content %}
+<h2>Cuotas Especiales</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Descripción</th>
+      <th>Monto USD</th>
+      <th>Monto Bs</th>
+      <th>Fecha</th>
+      <th>Aplica a</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in cuotas %}
+    <tr>
+      <td>{{ c.descripcion }}</td>
+      <td>{{ c.monto_usd }}</td>
+      <td>{{ c.monto_bs }}</td>
+      <td>{{ c.fecha }}</td>
+      <td>
+        {% if c.aplicar_a_todas %}
+          Todas las unidades
+        {% else %}
+          {% for u in c.unidades.all %}
+            {{ u.nombre }},
+          {% endfor %}
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

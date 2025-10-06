@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Generar Factura{% endblock %}
+{% block content %}
+<h2>Generar Factura</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="unidad" class="form-label">Unidad</label>
+        <select class="form-control" id="unidad" name="unidad" required>
+            {% for u in unidades %}
+            <option value="{{ u.id }}">{{ u.nombre }} - {{ u.propietario }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="monto_usd" class="form-label">Monto en USD</label>
+        <input type="number" step="any" class="form-control" id="monto_usd" name="monto_usd" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Generar Factura</button>
+</form>
+{% endblock %}
