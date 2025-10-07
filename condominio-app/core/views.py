@@ -8,6 +8,11 @@ from .models import ConfiguracionGeneral, Unidad, Pago, CategoriaGasto, Gasto, C
 from invoices.models import Factura
 from .forms import GastoForm, PagoForm, CuotaEspecialForm
 import requests
+from django.core.mail import send_mail
+from django.conf import settings
+import telegram
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
 
 @login_required
 def home(request):
@@ -205,3 +210,124 @@ def ver_saldos_pendientes(request):
         'saldo_pendiente_total': saldo_pendiente_total
     }
     return render(request, 'core/ver_saldos_pendientes.html', context)
+
+login_required
+def enviar_estado_cuenta(request):
+    try:
+        unidad = Unidad.objects.get(usuario=request.user)
+    except Unidad.DoesNotExist:
+        messages.error(request, "No tienes una unidad asociada.")
+        return redirect('home')
+
+    facturas = Factura.objects.filter(unidad=unidad, pagada=False).order_by('-fecha_emision')
+
+    saldo_pendiente_total = sum(f.saldo_pendiente_bs() for f in facturas)
+
+    # Enviar correo electrónico
+    asunto = f'Estado de Cuenta - {unidad.nombre}'
+    mensaje = f'''
+    Hola {unidad.propietario},
+
+    Este es tu estado de cuenta:
+
+    Unidad: {unidad.nombre}
+    Propietario: {unidad.propietario}
+    Inquilino: {unidad.inquilino}
+
+    Saldo Pendiente Total: {saldo_pendiente_total} Bs
+
+    Facturas Pendientes:
+    '''
+    for f in facturas:
+        mensaje += f'- {f.fecha_emision}: {f.monto_total_bs_fecha_emision} Bs ({f.monto_total_usd} USD)\n'
+
+    mensaje += f'''
+
+    Saludos,
+    CondominioApp
+    '''
+
+    try:
+        send_mail(
+            asunto,
+            mensaje,
+            settings.EMAIL_HOST_USER,  # Remitente (debe estar configurado en settings.py)
+            [unidad.email],  # Destinatario
+            fail_silently=False,
+        )
+        messages.success(request, f'Estado de cuenta enviado a {unidad.email}.')
+    except Exception as e:
+        messages.error(request, f'Error al enviar el correo: {str(e)}')
+
+    return redirect('mi_cuenta')
+
+
+@login_required
+def enviar_estado_cuenta_telegram(request):
+    try:
+        unidad = Unidad.objects.get(usuario=request.user)
+    except Unidad.DoesNotExist:
+        messages.error(request, "No tienes una unidad asociada.")
+        return redirect('home')
+
+    facturas = Factura.objects.filter(unidad=unidad, pagada=False).order_by('-fecha_emision')
+
+    saldo_pendiente_total = sum(f.saldo_pendiente_bs() for f in facturas)
+
+    # Enviar mensaje de Telegram
+    bot_token = settings.TELEGRAM_BOT_TOKEN  # Debe estar configurado en settings.py
+    chat_id = unidad.usuario.telegram_chat_id  # Debe estar guardado en el modelo User
+
+    mensaje = f'''
+    Hola {unidad.propietario},
+
+    Este es tu estado de cuenta:
+
+    Unidad: {unidad.nombre}
+    Propietario: {unidad.propietario}
+    Inquilino: {unidad.inquilino}
+
+    Saldo Pendiente Total: {saldo_pendiente_total} Bs
+
+    Facturas Pendientes:
+    '''
+    for f in facturas:
+        mensaje += f'- {f.fecha_emision}: {f.monto_total_bs_fecha_emision} Bs ({f.monto_total_usd} USD)\n'
+
+    mensaje += f'''
+
+    Saludos,
+    CondominioApp
+    '''
+
+    try:
+        bot = telegram.Bot(token=bot_token)
+        bot.send_message(chat_id=chat_id, text=mensaje)
+        messages.success(request, f'Estado de cuenta enviado por Telegram.')
+    except Exception as e:
+        messages.error(request, f'Error al enviar el mensaje de Telegram: {str(e)}')
+
+    return redirect('mi_cuenta')
+
+@login_required
+def generar_factura_pdf(request, id):
+    try:
+        unidad = Unidad.objects.get(usuario=request.user)
+    except Unidad.DoesNotExist:
+        messages.error(request, "No tienes una unidad asociada.")
+        return redirect('home')
+
+    factura = Factura.objects.get(id=id, unidad=unidad)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="factura_{factura.id}.pdf"'
+
+    p = canvas.Canvas(response)
+    p.drawString(100, 800, f"Factura #{factura.id}")
+    p.drawString(100, 780, f"Unidad: {unidad.nombre}")
+    p.drawString(100, 760, f"Propietario: {unidad.propietario}")
+    p.drawString(100, 740, f"Monto: {factura.monto_total_usd} USD / {factura.monto_total_bs_fecha_emision} Bs")
+    p.showPage()
+    p.save()
+
+    return response

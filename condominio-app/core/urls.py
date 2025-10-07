@@ -18,4 +18,7 @@ urlpatterns = [
     path('cuotas-especiales/crear/', views.crear_cuota_especial, name='crear_cuota_especial'),
     path('actualizar-tasa/', views.actualizar_tasa_api, name='actualizar_tasa_api'),
     path('actualizar-tasa-manual/', views.actualizar_tasa_manual, name='actualizar_tasa_manual'),
+     path('enviar-estado-cuenta/', views.enviar_estado_cuenta, name='enviar_estado_cuenta'), 
+     path('enviar-estado-cuenta-telegram/', views.enviar_estado_cuenta_telegram, name='enviar_estado_cuenta_telegram'),
+     path('factura-pdf/<int:id>/', views.generar_factura_pdf, name='generar_factura_pdf'),
 ]
