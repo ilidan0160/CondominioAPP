@@ -5,20 +5,22 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Tipo</th>
+      <th>Monto Origen</th>
+      <th>Monto Destino</th>
+      <th>Tasa</th>
       <th>Fecha</th>
-      <th>Monto Bs</th>
-      <th>Monto USD</th>
-      <th>Tasa USD</th>
       <th>Descripción</th>
     </tr>
   </thead>
   <tbody>
     {% for c in conversiones %}
     <tr>
-      <td>{{ c.fecha_conversion }}</td>
-      <td>{{ c.monto_bs }}</td>
-      <td>{{ c.monto_usd }}</td>
+      <td>{{ c.tipo_operacion }}</td>
+      <td>{{ c.monto_origen }} {% if c.tipo_operacion == 'compra' %}Bs{% else %}USD{% endif %}</td>
+      <td>{{ c.monto_destino }} {% if c.tipo_operacion == 'compra' %}USD{% else %}Bs{% endif %}</td>
       <td>{{ c.tasa_usd }}</td>
+      <td>{{ c.fecha_conversion }}</td>
       <td>{{ c.descripcion|default:"N/A" }}</td>
     </tr>
     {% endfor %}

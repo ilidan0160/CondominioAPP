@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Crear Conversión de Divisa{% endblock %}
+{% block content %}
+<h2>Crear Conversión de Divisa</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="{{ form.tipo_operacion.id_for_label }}" class="form-label">Tipo de Operación</label>
+        {{ form.tipo_operacion }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.monto_origen.id_for_label }}" class="form-label">Monto Origen</label>
+        {{ form.monto_origen }}
+        <small class="form-text text-muted">Bs si compra, USD si vende</small>
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.monto_destino.id_for_label }}" class="form-label">Monto Destino</label>
+        {{ form.monto_destino }}
+        <small class="form-text text-muted">USD si compra, Bs si vende</small>
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.tasa_usd.id_for_label }}" class="form-label">Tasa USD</label>
+        {{ form.tasa_usd }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.descripcion.id_for_label }}" class="form-label">Descripción</label>
+        {{ form.descripcion }}
+    </div>
+    <button type="submit" class="btn btn-primary">Crear Conversión</button>
+</form>
+{% endblock %}
