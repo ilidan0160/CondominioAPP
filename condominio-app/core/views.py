@@ -9,8 +9,6 @@ from invoices.models import Factura
 from .forms import GastoForm, PagoForm, CuotaEspecialForm
 import requests
 
-    
-
 @login_required
 def home(request):
     if request.user.is_authenticated:
@@ -126,7 +124,7 @@ def mis_facturas(request):
         messages.error(request, "No tienes una unidad asociada.")
         return redirect('home')
 
-    facturas = Factura.objects.filter(unidad=unidad)
+    facturas = Factura.objects.filter(unidad=unidad).order_by('-fecha_emision')  # ← Agregamos el ordenamiento
 
     context = {
         'facturas': facturas
@@ -174,3 +172,36 @@ def crear_cuota_especial(request):
         form = CuotaEspecialForm()
 
     return render(request, 'core/crear_cuota_especial.html', {'form': form})
+
+@login_required
+def ver_pagos_propietario(request):
+    try:
+        unidad = Unidad.objects.get(usuario=request.user)
+    except Unidad.DoesNotExist:
+        messages.error(request, "No tienes una unidad asociada.")
+        return redirect('home')
+
+    pagos = Pago.objects.filter(unidad=unidad).order_by('-fecha_pago')
+
+    context = {
+        'pagos': pagos
+    }
+    return render(request, 'core/ver_pagos_propietario.html', context)
+
+@login_required
+def ver_saldos_pendientes(request):
+    try:
+        unidad = Unidad.objects.get(usuario=request.user)
+    except Unidad.DoesNotExist:
+        messages.error(request, "No tienes una unidad asociada.")
+        return redirect('home')
+
+    facturas = Factura.objects.filter(unidad=unidad, pagada=False).order_by('-fecha_emision')
+
+    saldo_pendiente_total = sum(f.saldo_pendiente_bs() for f in facturas)
+
+    context = {
+        'facturas': facturas,
+        'saldo_pendiente_total': saldo_pendiente_total
+    }
+    return render(request, 'core/ver_saldos_pendientes.html', context)

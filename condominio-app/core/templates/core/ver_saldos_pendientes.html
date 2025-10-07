@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Saldos Pendientes{% endblock %}
+{% block content %}
+<h2>Saldos Pendientes</h2>
+
+<h4>Saldo Pendiente Total: {{ saldo_pendiente_total|floatformat:2 }} Bs</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Monto USD</th>
+      <th>Monto Bs</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for f in facturas %}
+    <tr>
+      <td>{{ f.monto_total_usd }}</td>
+      <td>{{ f.monto_total_bs_fecha_emision }}</td>
+      <td>{{ f.fecha_emision }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

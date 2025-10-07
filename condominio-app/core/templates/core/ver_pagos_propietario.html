@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Mis Pagos{% endblock %}
+{% block content %}
+<h2>Mis Pagos</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Monto Bs</th>
+      <th>Monto USD</th>
+      <th>Tasa USD</th>
+      <th>Fecha</th>
+      <th>Método</th>
+      <th>Estado</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in pagos %}
+    <tr>
+      <td>{{ p.monto_pagado_bs }}</td>
+      <td>{{ p.monto_pagado_usd }}</td>
+      <td>{{ p.tasa_usd_fecha_pago }}</td>
+      <td>{{ p.fecha_pago }}</td>
+      <td>{{ p.metodo_pago }}</td>
+      <td>{{ p.estado }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
